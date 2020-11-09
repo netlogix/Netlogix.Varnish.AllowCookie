@@ -6,6 +6,9 @@ will set a cookie.
 This can be useful when only a select few requests should be able to set a cookie. Varnish can check if the beresp
 contains a `Set-Cookie` header and remove it if `X-Allow-Cookie` is not set.
 
+## Installation
+`composer require netlogix/varnish-allowcookie`
+
 ## Configuration
 The allowed patterns can be configured like this:
 
