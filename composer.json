@@ -1,0 +1,19 @@
+{
+    "name": "netlogix/varnish-allowcookie",
+    "description": "Set 'X-Allow-Cookie' header for configured request patterns.",
+    "type": "neos-package",
+    "require": {
+        "php": "^7.2",
+        "neos/flow": "^5.0 || ^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Netlogix\\Varnish\\AllowCookie\\": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Netlogix.Varnish.AllowCookie"
+        }
+    }
+}
