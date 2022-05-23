@@ -1,0 +1,5 @@
+Netlogix:
+  Varnish:
+    AllowCookie:
+      allowedRequestPathPatterns:
+        - '#^/neos#'
