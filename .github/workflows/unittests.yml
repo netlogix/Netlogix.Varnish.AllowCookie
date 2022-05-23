@@ -1,0 +1,62 @@
+name: unittests
+
+on: [push, pull_request]
+
+jobs:
+  unittests:
+    name: '[PHP ${{ matrix.php-version }} | Flow ${{ matrix.flow-version }}] Unit Tests'
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [7.4, 8.0, 8.1]
+        flow-version: [7.3, 8.0]
+
+        exclude:
+          # Disable Flow 8.0 on PHP 7, as 8.0 is required
+          - php-version: 7.4
+            flow-version: 8.0
+
+    env:
+      FLOW_CONTEXT: Testing/Unit
+      FLOW_DIST_FOLDER: flow-base-distribution
+
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, xml, json, zlib, iconv, intl, pdo_sqlite
+          ini-values: opcache.fast_shutdown=0
+
+      - name: "[1/4] Create composer project - Cache composer dependencies"
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache
+          key: php-${{ matrix.php-version }}-flow-${{ matrix.flow-version }}-composer-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            php-${{ matrix.php-version }}-flow-${{ matrix.flow-version }}-composer-
+            php-${{ matrix.php-version }}-flow-
+      - name: "[2/4] Create composer project - No install"
+        run: composer create-project neos/flow-base-distribution ${{ env.FLOW_DIST_FOLDER }} --prefer-dist --no-progress --no-install "^${{ matrix.flow-version }}"
+
+      - name: "[3/4] Create composer project  - Require behat in compatible version"
+        run: composer require --dev --no-update "neos/behat:@dev"
+        working-directory: ${{ env.FLOW_DIST_FOLDER }}
+
+      - name: "[4/4] Create composer project - Install project"
+        run: composer install
+        working-directory: ${{ env.FLOW_DIST_FOLDER }}
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.FLOW_DIST_FOLDER }}/DistributionPackages/Netlogix.Varnish.AllowCookie
+
+      - name: Install netlogix/varnish-allowcookie
+        run: composer require netlogix/varnish-allowcookie:@dev
+        working-directory: ${{ env.FLOW_DIST_FOLDER }}
+
+      - name: Run tests
+        run: bin/phpunit -c DistributionPackages/Netlogix.Varnish.AllowCookie/phpunit.xml.dist --testsuite="Unit" --bootstrap "Build/BuildEssentials/PhpUnit/UnitTestBootstrap.php"
+        working-directory: ${{ env.FLOW_DIST_FOLDER }}

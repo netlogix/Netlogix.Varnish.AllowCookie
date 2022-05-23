@@ -23,4 +23,4 @@ Requests staring with `/neos` will be allowed by default.
 ## Tests
 Tests currently require this package to be installed in a Flow environment.
 
-`FLOW_CONTEXT=Test/Unit ./bin/phpunit -c Build/BuildEssentials/PhpUnit/UnitTests.xml Packages/Application/Netlogix.Varnish.AllowCookie/Tests/Unit/`
+`FLOW_CONTEXT=Testing/Unit ./bin/phpunit -c Packages/Application/Netlogix.Varnish.AllowCookie/phpunit.xml.dist --testsuite="Unit" --bootstrap "Build/BuildEssentials/PhpUnit/UnitTestBootstrap.php"`

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         beStrictAboutChangesToGlobalState="true"
+         beStrictAboutOutputDuringTests="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         timeoutForSmallTests="0">
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>./Tests/Unit/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./Classes</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="Build/Artifacts/Reports/PhpUnit/Coverage"/>
+        <log type="coverage-clover" target="Build/Artifacts/Reports/PhpUnit/clover.xml"/>
+        <log type="coverage-crap4j" target="Build/Artifacts/Reports/PhpUnit/crap4j.xml"/>
+        <log type="junit" target="Build/Artifacts/Reports/PhpUnit/junit.xml"/>
+    </logging>
+    <php>
+        <ini name="date.timezone" value="Europe/Berlin"/>
+    </php>
+</phpunit>
