@@ -1,12 +1,7 @@
 Neos:
   Flow:
     http:
-      chain:
-        postprocess:
-          chain:
-            setAllowCookie:
-              position: 'after setSessionCookie'
-              component: 'Netlogix\Varnish\AllowCookie\Component\SetAllowCookieComponent'
-              componentOptions:
-                allowedRequestPathPatterns:
-                  - '#^/neos#'
+      middlewares:
+        'setAllowCookie':
+          middleware: 'Netlogix\Varnish\AllowCookie\Middleware\SetAllowCookieMiddleware'
+          position: 'after securityEntryPoint'
