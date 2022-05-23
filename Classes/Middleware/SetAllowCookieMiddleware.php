@@ -10,7 +10,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Throwable;
 
-final class SetAllowCookieMiddleware implements MiddlewareInterface
+class SetAllowCookieMiddleware implements MiddlewareInterface
 {
 
     private const SET_COOKIE = 'Set-Cookie';
@@ -27,7 +27,7 @@ final class SetAllowCookieMiddleware implements MiddlewareInterface
     {
         $response = $handler->handle($request);
 
-        if (!$response->hasHeader(SetAllowCookieMiddleware::SET_COOKIE)) {
+        if (!$response->hasHeader(self::SET_COOKIE)) {
             return $response;
         }
 
@@ -59,7 +59,7 @@ final class SetAllowCookieMiddleware implements MiddlewareInterface
         }
 
         return $response->withHeader(
-            SetAllowCookieMiddleware::X_ALLOW_COOKIE,
+            self::X_ALLOW_COOKIE,
             1
         );
     }
