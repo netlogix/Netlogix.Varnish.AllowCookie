@@ -4,4 +4,4 @@ Neos:
       middlewares:
         'setAllowCookie':
           middleware: 'Netlogix\Varnish\AllowCookie\Middleware\SetAllowCookieMiddleware'
-          position: 'after securityEntryPoint'
+          position: 'before session'
